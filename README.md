@@ -10,7 +10,7 @@ detect filesystem changes and recompile whenever there are changes detected.
 ```python
 import pylibsass
 
-pylibsass.watch("app/static/scss")
+pylibsass.watch("app/static/scss", "app/static/css")
 ```
 
 ## Installation

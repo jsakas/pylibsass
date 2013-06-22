@@ -10,8 +10,21 @@ Links
 * `libsass <https://github.com/hcatlin/libsass>`_
 """
 from setuptools import Extension, setup
+from setuptools.command.test import test as TestCommand
 
 VERSION = '0.1'
+
+class PyTest(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import pytest, sys
+
+        errno = pytest.main(self.test_args)
+        sys.exit(errno)
 
 libsass_sources = [
     'libsass/constants.cpp', 'libsass/context.cpp', 'libsass/functions.cpp', 'libsass/document.cpp',
@@ -48,11 +61,16 @@ setup(
     long_description=__doc__,
     ext_modules=[sass_extension],
     packages=['pylibsass'],
-    py_modules=['sassc'],
     zip_safe=False,
     include_package_data=True,
     platforms='any',
+    cmdclass = {'test': PyTest},
+    tests_require=[
+        'pytest',
+        'mock',
+    ],
     install_requires=[
+        'watchdog',
     ],
     classifiers=[
         'Intended Audience :: Developers',

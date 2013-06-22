@@ -1,14 +1,3 @@
-"""
-pylibsass
----------
-
-
-Links
-`````
-
-* `pylibsass <http://github.com/rsenk330/pylibsass>`_
-* `libsass <https://github.com/hcatlin/libsass>`_
-"""
 from setuptools import Extension, setup
 from setuptools.command.test import test as TestCommand
 
@@ -50,6 +39,9 @@ sass_extension = Extension(
     extra_link_args=['-fPIC'],
 )
 
+with open("README.txt", 'r') as readme_file:
+    readme = readme_file.read()
+
 setup(
     name='pylibsass',
     version=VERSION,
@@ -58,7 +50,7 @@ setup(
     author='Ryan Senkbeil',
     author_email='rsenk330@gmail.com',
     description='Python wrapper for libsass',
-    long_description=__doc__,
+    long_description=readme,
     ext_modules=[sass_extension],
     packages=['pylibsass'],
     zip_safe=False,

@@ -1,4 +1,4 @@
-# Pylibsass
+# Pylibsass [![Build Status](https://travis-ci.org/rsenk330/pylibsass.png?branch=master)](https://travis-ci.org/rsenk330/pylibsass)
 
 Pylibsass is a Python wrapper around the 
 [libsass](https://github.com/hcatlin/libsass) library. The main goal of this

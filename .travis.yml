@@ -7,3 +7,5 @@ script: python setup.py test
 install:
   - python setup.py develop
   - "if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then pip install unittest2; fi"
+before_install:
+  - git submodule update --init --recursive

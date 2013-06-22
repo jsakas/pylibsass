@@ -39,7 +39,7 @@ sass_extension = Extension(
     extra_link_args=['-fPIC'],
 )
 
-with open("README.txt", 'r') as readme_file:
+with open("README.md", 'r') as readme_file:
     readme = readme_file.read()
 
 setup(

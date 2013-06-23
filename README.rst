@@ -5,7 +5,7 @@ Pylibsass
         :target: https://travis-ci.org/rsenk330/pylibsass
 
 .. image:: https://pypip.in/d/pylibsass/badge.png
-        :target: https://crate.io/package/pylibsass
+        :target: https://crate.io/packages/pylibsass
 
 Pylibsass is a Python wrapper around the 
 `libsass <https://github.com/hcatlin/libsas>`_ library. The main goal of this

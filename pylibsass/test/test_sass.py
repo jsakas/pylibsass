@@ -1,9 +1,9 @@
 import pytest
 
-from mock import patch
+from mock import Mock, patch
 
 import textwrap
-import pylibsass
+from pylibsass.sass import compile_str
 
 def test_compile_str():
     src_scss = textwrap.dedent("""
@@ -14,6 +14,7 @@ def test_compile_str():
         }
     """)
 
-    css = pylibsass.compile_str(src_scss)
+    css = compile_str(src_scss)
 
     assert "".join(css.split("\n")) == ".test .test-inner {  width: 100px; }"
+

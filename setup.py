@@ -1,7 +1,9 @@
 from setuptools import Extension, setup
 from setuptools.command.test import test as TestCommand
 
-VERSION = '0.1'
+import pylibsass
+
+VERSION = pylibsass.__version__
 
 class PyTest(TestCommand):
     def finalize_options(self):

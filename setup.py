@@ -1,5 +1,12 @@
+import os
+import sys
+
 from setuptools import Extension, setup
 from setuptools.command.test import test as TestCommand
+
+if sys.argv[-1] == 'publish':
+    os.system('python setup.py sdist upload')
+    sys.exit()
 
 execfile('pylibsass/version.py')
 
@@ -42,11 +49,14 @@ sass_extension = Extension(
 with open("README.rst", 'r') as readme_file:
     readme = readme_file.read()
 
+with open("LICENSE", 'r') as license_file:
+    license = license_file.read()
+
 setup(
     name='pylibsass',
     version=__version__,
     url='http://github.com/rsenk330/pylibsass',
-    license='',
+    license=license,
     author='Ryan Senkbeil',
     author_email='rsenk330@gmail.com',
     description='Python wrapper for libsass',

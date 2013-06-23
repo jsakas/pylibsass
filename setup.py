@@ -1,9 +1,7 @@
 from setuptools import Extension, setup
 from setuptools.command.test import test as TestCommand
 
-import pylibsass
-
-VERSION = pylibsass.__version__
+execfile('pylibsass/version.py')
 
 class PyTest(TestCommand):
     def finalize_options(self):
@@ -35,7 +33,7 @@ libsass_headers = [
 sass_extension = Extension(
     'sass',
     libsass_sources,
-    define_macros=[('LIBSASS_PYTHON_VERSION', VERSION)],
+    define_macros=[('LIBSASS_PYTHON_VERSION', __version__)],
     depends=libsass_headers,
     extra_compile_args=['-Wall', '-O2', '-fPIC'],
     extra_link_args=['-fPIC'],
@@ -46,7 +44,7 @@ with open("README.rst", 'r') as readme_file:
 
 setup(
     name='pylibsass',
-    version=VERSION,
+    version=__version__,
     url='http://github.com/rsenk330/pylibsass',
     license='',
     author='Ryan Senkbeil',

@@ -35,28 +35,55 @@ class SassFolderContext(Structure):
         ("error_message", c_char_p),
     ]
 
-SASS_CLIB = cdll.LoadLibrary('sass.so')
-SASS_CLIB.sass_new_context.restype = POINTER(SassContext)
-SASS_CLIB.sass_new_file_context.restype = POINTER(SassFileContext)
-SASS_CLIB.sass_new_folder_context.restype = POINTER(SassFolderContext)
+class LibSass(object):
+    def __init__(self):
+        self.clib = None
 
-SASS_CLIB.sass_compile.restype = c_int
-SASS_CLIB.sass_compile.argtypes = [POINTER(SassContext)]
+    def _load(self):
+        if self.clib is None:
+            self.clib = cdll.LoadLibrary('sass.so')
+            self.clib.sass_new_context.restype = POINTER(SassContext)
+            self.clib.sass_new_file_context.restype = POINTER(SassFileContext)
+            self.clib.sass_new_folder_context.restype = POINTER(SassFolderContext)
 
-SASS_CLIB.sass_compile_file.restype = c_int
-SASS_CLIB.sass_compile_file.argtypes = [POINTER(SassFileContext)]
+            self.clib.sass_compile.restype = c_int
+            self.clib.sass_compile.argtypes = [POINTER(SassContext)]
 
-SASS_CLIB.sass_compile_folder.restype = c_int
-SASS_CLIB.sass_compile_folder.argtypes = [POINTER(SassFolderContext)]
+            self.clib.sass_compile_file.restype = c_int
+            self.clib.sass_compile_file.argtypes = [POINTER(SassFileContext)]
 
-def _compile(ctx):
-    return SASS_CLIB.sass_compile(ctx)
+            self.clib.sass_compile_folder.restype = c_int
+            self.clib.sass_compile_folder.argtypes = [POINTER(SassFolderContext)]
 
-def _compile_file(ctx):
-    return SASS_CLIB.sass_compile_file(ctx)
+    def __getattribute__(self, name):
+        attr = object.__getattribute__(self, name)
+        if hasattr(attr, '__call__') and name != "_load":
+            def load_wrapper(*args, **kwargs):
+                self._load()
+                return attr(*args, **kwargs)
+            return load_wrapper
+        else:
+            return attr
 
-def _compile_folder(ctx):
-    return SASS_CLIB.sass_compile_folder(ctx)
+    def sass_new_context(self):
+        return self.clib.sass_new_context()
+
+    def sass_new_file_context(self):
+        return self.clib.sass_new_file_context()
+
+    def sass_new_folder_context(self):
+        return self.clib.sass_new_folder_context()
+
+    def compile(self, ctx):
+        return self.clib.sass_compile(ctx)
+
+    def compile_file(self, ctx):
+        return self.clib.sass_compile_file(ctx)
+
+    def compile_folder(self, ctx):
+        return self.clib.sass_compile_folder(ctx)
+
+SASS_CLIB = LibSass()
 
 def compile_str(contents):
     """Compiles a SASS string
@@ -68,6 +95,6 @@ def compile_str(contents):
     ctx = SASS_CLIB.sass_new_context()
     ctx.contents.source_string = c_char_p(contents)
 
-    _compile(ctx)
+    SASS_CLIB.compile(ctx)
 
     return ctx.contents.output_string

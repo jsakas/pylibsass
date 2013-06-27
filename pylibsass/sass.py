@@ -109,4 +109,7 @@ def compile_str(contents):
 
     SASS_CLIB.compile(ctx)
 
+    if ctx.contents.error_status:
+        print(ctx.contents.error_message)
+
     return ctx.contents.output_string or ""

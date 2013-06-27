@@ -48,6 +48,8 @@ class FileSystemEvents(FileSystemEventHandler):
         if not os.path.exists(self._dest_path):
             os.makedirs(self._dest_path)
 
+        orig_path = os.getcwd()
+
         for scss_file in self.get_scss_files():
             # Read in the source SCSS file contents
             contents = ""
@@ -58,7 +60,9 @@ class FileSystemEvents(FileSystemEventHandler):
             css_filename = os.path.splitext(scss_file)[0] + ".css"
 
             with open(os.path.join(self._dest_path, css_filename), 'w') as css_file:
+                os.chdir(self._source_path)
                 css_file.write(compile_str(contents))
+                os.chdir(orig_path)
 
     def on_any_event(self, event):
         self.compile_scss()

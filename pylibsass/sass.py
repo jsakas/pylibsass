@@ -1,3 +1,5 @@
+import os
+
 from ctypes import *
 
 class SassOptions(Structure):
@@ -41,7 +43,21 @@ class LibSass(object):
 
     def _load(self):
         if self.clib is None:
-            self.clib = cdll.LoadLibrary('sass.so')
+            root_path = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__ )), '..'))
+            path1 = os.path.join(root_path, 'sass.so')
+            path2 = os.path.join(root_path, '..', 'sass.so')
+
+            print root_path
+            print path1
+            print path2
+
+            if os.path.exists(path1):
+                self.clib = cdll.LoadLibrary(path1)
+            elif os.path.exists(path1):
+                self.clib = cdll.LoadLibrary(path2)
+            else:
+                raise Exception("Could not load library")
+
             self.clib.sass_new_context.restype = POINTER(SassContext)
             self.clib.sass_new_file_context.restype = POINTER(SassFileContext)
             self.clib.sass_new_folder_context.restype = POINTER(SassFolderContext)

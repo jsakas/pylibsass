@@ -47,10 +47,6 @@ class LibSass(object):
             path1 = os.path.join(root_path, 'sass.so')
             path2 = os.path.join(root_path, '..', 'sass.so')
 
-            print root_path
-            print path1
-            print path2
-
             if os.path.exists(path1):
                 self.clib = cdll.LoadLibrary(path1)
             elif os.path.exists(path1):
@@ -113,4 +109,4 @@ def compile_str(contents):
 
     SASS_CLIB.compile(ctx)
 
-    return ctx.contents.output_string
+    return ctx.contents.output_string or ""

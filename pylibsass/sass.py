@@ -38,10 +38,17 @@ class SassFolderContext(Structure):
     ]
 
 class LibSass(object):
+    """Wrapper class around libsass.
+
+    The class provides methods that mimic the functions in sass_interface.h
+
+    """
+
     def __init__(self):
         self.clib = None
 
     def _load(self):
+        """Loads the libsass library if it isn't already loaded."""
         if self.clib is None:
             root_path = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__ )), '..'))
             path1 = os.path.join(root_path, 'sass.so')
@@ -78,21 +85,57 @@ class LibSass(object):
             return attr
 
     def sass_new_context(self):
+        """Gets a new sass context object.
+
+        This calls the `sass_new_context()` function.
+
+        """
         return self.clib.sass_new_context()
 
     def sass_new_file_context(self):
+        """Gets a new sass file context object.
+
+        This calls the `sass_new_file_context()` function.
+
+        """
         return self.clib.sass_new_file_context()
 
     def sass_new_folder_context(self):
+        """Gets a new sass folder context object.
+
+        This calls the `sass_new_folder_context()` function.
+
+        """
         return self.clib.sass_new_folder_context()
 
     def compile(self, ctx):
+        """Compiles a string to CSS
+
+        This calls the `sass_compile` function.
+
+        :param :class:`pylibsass.sass.SassContext` ctx: The libsass context
+
+        """
         return self.clib.sass_compile(ctx)
 
     def compile_file(self, ctx):
+        """Compiles a file to CSS
+
+        This calls the `sass_compile_file` function.
+
+        :param :class:`pylibsass.sass.SassFileContext` ctx: The libsass context
+
+        """
         return self.clib.sass_compile_file(ctx)
 
     def compile_folder(self, ctx):
+        """Compiles a folder to CSS
+
+        This calls the `sass_compile_folder` function.
+
+        :param :class:`pylibsass.sass.SassFolderContext` ctx: The libsass context
+
+        """
         return self.clib.sass_compile_folder(ctx)
 
 SASS_CLIB = LibSass()

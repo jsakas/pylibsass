@@ -29,6 +29,11 @@ Installation is easy:
 
     $ pip install pylibsass
 
+Documentation
+-------------
+
+You can view the documentation on `Read the Docs <https://pylibsass.readthedocs.org/>`_.
+
 Development
 -----------
 

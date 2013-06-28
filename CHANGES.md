@@ -1,6 +1,13 @@
 Pylibsass Changes
 =================
 
+Version 0.1.4
+-------------
+
+Released June 27, 2013 (documentation release)
+
+- Add documentation
+
 Version 0.1.3
 -------------
 
